@@ -1,0 +1,82 @@
+
+#61
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("ipl-matches.csv")
+
+# 1. Basic info about dataframe
+print(df.info())
+
+# 2. List out all matches gone in superover
+superover_matches = df[df['SuperOver'] == 'Y']
+print(superover_matches[['ID','City','Date','Team1','Team2','WinningTeam']])
+
+# 3. How Many Matches won by Chennai Super Kings at Kolkata
+csk_kolkata_wins = df[(df['WinningTeam'] == 'Chennai Super Kings') & (df['City'] == 'Kolkata')]
+print("CSK wins at Kolkata:", len(csk_kolkata_wins))
+
+# 4. In How Many Matches MS Dhoni is Player of Match Vs Mumbai Indians
+dhoni_vs_mi = df[(df['Player_of_Match'] == 'MS Dhoni') & 
+                 ((df['Team1'] == 'Mumbai Indians') | (df['Team2'] == 'Mumbai Indians'))]
+print("Dhoni Player of Match vs MI:", len(dhoni_vs_mi))
+
+# 5. Display list of all matches in which Gujarat Titans won the Toss, Elected to Bat and won
+gt_toss_bat_win = df[(df['TossWinner'] == 'Gujarat Titans') & 
+                     (df['TossDecision'] == 'bat') & 
+                     (df['WinningTeam'] == 'Gujarat Titans')]
+print(gt_toss_bat_win[['ID','City','Date','Team1','Team2','WinningTeam']])
+
+# 6. Display list of all matches won by Gujarat Titans
+gt_wins = df[df['WinningTeam'] == 'Gujarat Titans']
+print(gt_wins[['ID','City','Date','Team1','Team2','WinningTeam']])
+
+
+#64
+
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("car data.csv")
+
+# Display basic information
+print("Basic Info:")
+print(df.info())
+
+# 1. Ritz cars with kms driven > 30000
+ritz_count = df[(df['Car_Name'].str.contains('ritz', case=False)) & (df['Kms_Driven'] > 30000)].shape[0]
+print("1. Ritz cars with kms > 30000:", ritz_count)
+
+# 2. Petrol cars of year 2017 with selling price > 10 lakhs
+petrol_2017_count = df[(df['Fuel_Type'] == 'Petrol') & (df['Year'] == 2017) & (df['Selling_Price'] > 10)].shape[0]
+print("2. Petrol cars (2017, price > 10L):", petrol_2017_count)
+
+# 3. Swift cars with selling price < 4 lakhs
+swift_count = df[(df['Car_Name'].str.contains('swi', case=False)) & (df['Selling_Price'] < 4)].shape[0]
+print("3. Swift cars with price < 4L:", swift_count)
+
+# 4. Automatic Transmission Petrol cars of year 2015 with selling price > 10 lakhs
+auto_petrol_2015_count = df[(df['Transmission'] == 'Automatic') & (df['Fuel_Type'] == 'Petrol') &
+                            (df['Year'] == 2015) & (df['Selling_Price'] > 10)].shape[0]
+print("4. Auto Petrol cars (2015, price > 10L):", auto_petrol_2015_count)
+
+# 5. Vehicles with Automatic Transmission and selling price < 1 lakh
+auto_under_1lakh = df[(df['Transmission'] == 'Automatic') & (df['Selling_Price'] < 1)]
+print("5. Auto Transmission cars with price < 1L:")
+print(auto_under_1lakh)
+
+# 6. Petrol vehicles with kms driven > 50000 and year between 2010 and 2015
+petrol_kms_year_count = df[(df['Fuel_Type'] == 'Petrol') & (df['Kms_Driven'] > 50000) &
+                           (df['Year'].between(2010, 2015))].shape[0]
+print("6. Petrol cars kms > 50000, year 2010-2015:", petrol_kms_year_count)
+
+# 7. Cars with price difference (Present_Price - Selling_Price) > 15 lakhs
+price_diff_cars = df[(df['Present_Price'] - df['Selling_Price']) > 15]
+print("7. Cars with price diff > 15L:")
+print(price_diff_cars)
+
+# 8. Petrol vehicles with kms driven < 5000 and selling price < 50000
+# Note: Selling_Price is in lakhs, so <0.5 means <50,000
+petrol_low_kms_low_price = df[(df['Fuel_Type'] == 'Petrol') & (df['Kms_Driven'] < 5000) &
+                              (df['Selling_Price'] < 0.5)]
+print("8. Petrol cars kms < 5000 & price < 50k:", petrol_low_kms_low_price.shape[0])
